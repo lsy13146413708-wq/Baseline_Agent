@@ -1,0 +1,7 @@
+pydantic>=2.0.0
+graphviz>=0.20.1
+python-docx>=0.8.11
+cryptography>=41.0.0
+requests>=2.31.0
+openai>=1.0.0
+streamlit>=1.20.0
