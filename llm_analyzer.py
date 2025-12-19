@@ -7,10 +7,14 @@ import re
 import json
 from typing import Optional
 
-from secure_api import load_api_key
 from schemas import Roadmap
 from pydantic import ValidationError
 from fallback import build_fallback_roadmap
+import streamlit as st
+import openai
+
+# 从 Streamlit Secret 里读取 OpenAI Key
+api_key = st.secrets["OPENAI_API_KEY"]
 
 
 LLM_SYSTEM_PROMPT = (
@@ -50,8 +54,6 @@ def _extract_json_block(text: str) -> Optional[str]:
 
 
 def analyze_structure(text: str, model: str = "deepseek-chat", api_key_env: str = "DEEPSEEK_API_KEY", key_file: Optional[str] = None, pass_env: str = "DEEPSEEK_KEY_PASSPHRASE", env_file: Optional[str] = None, key_name: str = "DEEPSEEK_API_KEY") -> Roadmap:
-    # 加载 API Key（优先 .env，其次加密文件，最后环境变量）
-    api_key = load_api_key(api_key_env=api_key_env, encrypted_file=key_file, pass_env=pass_env, env_file=env_file, key_name=key_name)
 
     content = None
     # 优先使用 OpenAI SDK 兼容模式（设置 base_url 指向 DeepSeek）
